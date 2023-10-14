@@ -5,6 +5,8 @@ import java.math.BigDecimal;
 /**
  * @author wjc28
  * @Date 2023/10/14
+ *
+ * @注释 处理创建商品时价格异常
  */
 public class CreateExceptionForProduct extends  Exception{
 	private BigDecimal productPrice;

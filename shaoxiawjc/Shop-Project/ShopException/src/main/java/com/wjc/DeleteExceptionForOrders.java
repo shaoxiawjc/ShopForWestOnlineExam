@@ -3,6 +3,8 @@ package com.wjc;
 /**
  * @author wjc28
  * @Date 2023/10/14
+ *
+ * @注释 处理删除订单找不到订单异常
  */
 public class DeleteExceptionForOrders extends Exception{
 

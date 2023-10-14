@@ -9,7 +9,8 @@ import java.util.Date;
 /**
  * @author wjc28
  * @Date 2023/10/14
- * */
+ * @注释 该类用于测试CRUD的代码是否正确
+ */
 public class Test {
 	public static void main(String[] args) throws SQLException, CreateExceptionForOrdersPrice, DeleteExceptionForOrders, CreateExceptionForProduct, SelectExceptionForOrders, UpdateExceptionForOrders, DeleteExceptionForProducts, SelectExceptionForProduct, UpdateExceptionForProduct {
 		Connection connection = Tools.getConnection();
@@ -64,31 +65,36 @@ public class Test {
 			// sql运行错误
 		} catch (SQLException e) {
 			throw new RuntimeException(e);
-		} // 创建订单价格错误
-		catch (CreateExceptionForOrdersPrice createExceptionForOrdersPrice) {
-			System.out.println(createExceptionForOrdersPrice.toString());
-		}  // 创建商品价格错误
-		catch (CreateExceptionForProduct createExceptionForProduct) {
-			System.out.println(createExceptionForProduct.toString());
-		}  // 删除订单时订单编号不存在错误
-		catch (DeleteExceptionForOrders deleteExceptionForOrders) {
-			System.out.println(deleteExceptionForOrders.toString());
-		} // 查询订单错误
-		catch (SelectExceptionForOrders selectException) {
-			System.out.println(selectException.toString());
-		} // 修改订单错误
-		catch (UpdateExceptionForOrders updateExceptionForOrders) {
-			System.out.println(updateExceptionForOrders.toString());
-		} // 删除商品失败
-		catch (DeleteExceptionForProducts deleteExceptionForProducts) {
-			System.out.println(deleteExceptionForProducts.toString());
-		} // 查询商品错误
-		catch (SelectExceptionForProduct selectExceptionForProduct) {
-			System.out.println(selectExceptionForProduct.toString());
-		} // 修改商品错误
-		catch (UpdateExceptionForProduct updateExceptionForProduct) {
-			System.out.println(updateExceptionForProduct.toString());
-		} finally {
+		} catch (CreateExceptionForOrdersPrice | DeleteExceptionForOrders | UpdateExceptionForOrders |
+				 SelectExceptionForOrders | CreateExceptionForProduct | DeleteExceptionForProducts |
+				 UpdateExceptionForProduct | SelectExceptionForProduct exception) {
+			exception.toString();
+		}
+//		// 创建订单价格错误
+//		catch (CreateExceptionForOrdersPrice createExceptionForOrdersPrice) {
+//			System.out.println(createExceptionForOrdersPrice.toString());
+//		} // 创建商品价格错误
+//		catch (CreateExceptionForProduct createExceptionForProduct) {
+//			System.out.println(createExceptionForProduct.toString());
+//		} // 删除订单时订单编号不存在错误
+//		catch (DeleteExceptionForOrders deleteExceptionForOrders) {
+//			System.out.println(deleteExceptionForOrders.toString());
+//		} // 查询订单错误
+//		catch (SelectExceptionForOrders selectException) {
+//			System.out.println(selectException.toString());
+//		} // 修改订单错误
+//		catch (UpdateExceptionForOrders updateExceptionForOrders) {
+//			System.out.println(updateExceptionForOrders.toString());
+//		} // 删除商品失败
+//		catch (DeleteExceptionForProducts deleteExceptionForProducts) {
+//			System.out.println(deleteExceptionForProducts.toString());
+//		} // 查询商品错误
+//		catch (SelectExceptionForProduct selectExceptionForProduct) {
+//			System.out.println(selectExceptionForProduct.toString());
+//		} // 修改商品错误
+//		catch (UpdateExceptionForProduct updateExceptionForProduct) {
+//			System.out.println(updateExceptionForProduct.toString());
+		finally {
 			if (connection != null) {
 				connection.close();
 			}

@@ -9,15 +9,19 @@ import java.util.Properties;
 /**
  * @author wjc28
  * @Date 2023/10/14
+ *
+ * @注释 以下为CRUD(增删改查)的一些方法，以及用于测试的清空表格的方法。
  */
 
 public class Tools {
+	/**
+	 * 一些配置用于连接数据库
+	 * */
 	private static String driver = null;
 	private static String url = null;
 	private static String username = null;
 	private static String password = null;
 
-	/* 配置并加载驱动 */
 	static {
 		try {
 			InputStream in = Tools.class.getClassLoader().getResourceAsStream("db.properties");
@@ -35,7 +39,9 @@ public class Tools {
 
 	}
 
-	/* 获取连接 */
+	/**
+	 * @注释 用于连接数据库
+	 * */
 	public static Connection getConnection() {
 		try {
 			return DriverManager.getConnection(url, username, password);
@@ -46,16 +52,18 @@ public class Tools {
 
 	// ========================================================================= //
 
-	/* 增,创建订单（对应错误CreateExceptionForOrdersPrice） */
+	/**
+	 * @注释 增,创建订单（对应错误CreateExceptionForOrdersPrice）
+	 * */
 	public static void addOrder(Connection connection, int productId, Date orderTime, BigDecimal orderPrice) throws SQLException, CreateExceptionForOrdersPrice {
 		String sql = "insert into orders (productid,ordertime,orderprice) values (?,?,?)";
 		PreparedStatement preparedStatement = null;
 		String compareSql = "select `productprice` from products where productid = ?";
-		// 用于比较订单价格是否小于商品价格
+		// compareSql 和 compareSt用于比较订单价格是否小于商品价格
 		PreparedStatement compareSt = null;
 		ResultSet resultSet = null;
 		try {
-			// 预编译
+			// 先比较商品价格是否有问题
 			compareSt = connection.prepareStatement(compareSql);
 			compareSt.setInt(1, productId);
 			resultSet = compareSt.executeQuery();
@@ -65,6 +73,7 @@ public class Tools {
 				}
 			}
 
+			// 开始创建新订单
 			preparedStatement = connection.prepareStatement(sql);
 			preparedStatement.setInt(1, productId);
 			preparedStatement.setDate(2, new java.sql.Date(orderTime.getTime()));
@@ -76,7 +85,6 @@ public class Tools {
 			} else {
 				System.out.println("订单创建成功");
 			}
-
 		} catch (SQLException e) {
 			throw new RuntimeException(e);
 		}
@@ -93,9 +101,10 @@ public class Tools {
 			}
 		}
 	}
-	// ======================================= //
 
-	/* 删除订单（对应异常DeleteExceptionForOrders） */
+	/**
+	 * @注释 删除订单（对应异常DeleteExceptionForOrders）
+	 * */
 	public static void deleteOrder(Connection connection, int orderId) throws SQLException, DeleteExceptionForOrders {
 		PreparedStatement preparedStatement = null;
 		String sql = "delete from orders where orderid = ?";
@@ -117,7 +126,9 @@ public class Tools {
 		}
 	}
 
-	/* 改，修改订单信息 （对应错误UpdateExceptionForOrders）*/
+	/**
+	 * @注释 改，修改订单信息 （对应错误UpdateExceptionForOrders）
+	 * */
 	public static void updateOrder(Connection connection, int orderId, int productId, Date orderTime, BigDecimal orderPrice) throws SQLException, UpdateExceptionForOrders {
 		PreparedStatement preparedStatement = null;
 		String sql = "update orders set productid = ?,ordertime = ?,orderprice = ? where orderid = ?";
@@ -142,8 +153,9 @@ public class Tools {
 		}
 	}
 
-	// ==================================================== //
-	/* 查，查询订单（对应异常SelectExceptionForOrders */
+	/**
+	 * @注释 查，查询订单（对应异常SelectExceptionForOrders
+	 * */
 	public static void selectOrder(Connection connection, int orderId) throws SQLException, SelectExceptionForOrders {
 		PreparedStatement preparedStatement = null;
 		ResultSet resultSet = null;
@@ -176,7 +188,9 @@ public class Tools {
 
 
 
-	/* 增加商品(对应异常CreateExceptionForProduct) */
+	/**
+	 * @注释 增加商品(对应异常CreateExceptionForProduct)
+	 * */
 	public static void addProduct(Connection connection, String productName, BigDecimal productPrice) throws SQLException, CreateExceptionForProduct {
 		if (productPrice.compareTo(new BigDecimal("0")) < 0) {
 			throw new CreateExceptionForProduct(productPrice);
@@ -204,7 +218,10 @@ public class Tools {
 
 	}
 
-	/* 删除商品（我的想法是如果订单中含有该商品，则一并删除）（对应异常DeleteExceptionForProducts）*/
+
+	/**
+	 * @注释 删除商品（我的想法是如果订单中含有该商品，则一并删除）（对应异常DeleteExceptionForProducts
+	 * */
 	public static void deleteProduct(Connection connection, int productId) throws SQLException, DeleteExceptionForProducts {
 		PreparedStatement preparedStatementForSelect = null;
 		PreparedStatement preparedStatementForDeleteRelativeOrders = null;
@@ -253,7 +270,9 @@ public class Tools {
 
 	}
 
-	/* 修改商品信息 （对应异常UpdateExceptionForProduct）*/
+	/**
+	 * @注释 修改商品信息 （对应异常UpdateExceptionForProduct
+	 * */
 	public static void updateProduct(Connection connection, int productId, String productName, BigDecimal productPrice) throws SQLException, UpdateExceptionForProduct {
 		PreparedStatement preparedStatement = null;
 		String sql = "update products set productname = ?,productprice = ? where productid = ?";
@@ -277,7 +296,9 @@ public class Tools {
 		}
 	}
 
-	/* 查询商品信息(对应异常SelectExceptionForProduct) */
+	/**
+	 * @注释 查询商品信息(对应异常SelectExceptionForProduct)
+	 * */
 	public static void selectProducts(Connection connection, String productName) throws SQLException, SelectExceptionForProduct {
 		PreparedStatement preparedStatement = null;
 		ResultSet resultSet = null;
@@ -308,7 +329,11 @@ public class Tools {
 
 	}
 
-	/* 清空处理，仅仅用于测试 */
+
+
+	/**
+	 * @注释 清空处理，仅仅用于测试
+	 * */
 	public static void truncateTables(Connection connection) throws SQLException {
 		PreparedStatement preparedStatementForTruncateOrders = null;
 		PreparedStatement preparedStatementForTruncateProducts = null;
