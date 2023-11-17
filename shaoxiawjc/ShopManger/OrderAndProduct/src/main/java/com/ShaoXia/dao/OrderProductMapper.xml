@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Config 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ShaoXia.dao.OrderProductMapper">
+    <insert id="insertOrderProduct" parameterType="map">
+        insert into orderproduct (order_id ,product_id,quantity, create_time)
+        values (#{order_id},#{product_id},#{quantity},#{create_time})
+    </insert>
+    
+    <update id="updateOrderProduct" parameterType="map">
+        update orderproduct
+        <set>
+            <if test="product_id != null">
+                 product_id = #{product_id}
+            </if>
+            <if test="quantity != null">
+                , quantity = #{quantity}
+            </if>
+            <if test="update_time != null">
+                , update_time = #{update_time}
+            </if>
+
+        </set>
+        where order_id = #{order_id}
+    </update>
+</mapper>

@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Config 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ShaoXia.dao.OrderMapper">
+
+    <!--查询订单的id，包含的商品的名称，数量，以及其总价-->
+    <select id="selectOrder" resultType="map">
+        select o.order_id, p.product_name, op.product_quantity,o.order_price
+        from order o
+        inner join orderproduct op on o.order_id = op.order_id
+        inner join product p on p.product_id = op.product_id
+        order by o.order_id,p.product_id
+        <where>
+            <if test="order_id != null">
+                and order_id = #{orderId}
+            </if>
+            <if test="product_name != null">
+                and product_id = #{productId}
+            </if>
+        </where>
+    </select>
+
+    <!--插入订单，这里没有对关联表进行操作，具体操作在service层使用事务进行管理-->
+    <insert id="insertOrder" parameterType="com.ShaoXia.pojo.Order">
+        insert into shop.order values (#{orderId},#{productId},#{productNum},#{orderPrice},#{create_time})
+    </insert>
+    <!--删除order，并且关联表里外键设置了ON DELETE CASCADE会一并删除-->
+    <delete id="deleteOder" parameterType="_int">
+        delete from shop.order where oder_id = #{id}
+    </delete>
+
+    <update id="updateOrder" parameterType="_int">
+        update order o
+        set  o.order_price = (
+            select SUM(op.quantity * p.product_price)
+            from orderproduct op
+            inner join product p on p.product_id = op.product_id
+            where o.order_id = op.order_id
+            )
+        , update_time = #{updateTime}
+        where o.order_id = #{order_id}
+    </update>
+
+
+
+</mapper>
