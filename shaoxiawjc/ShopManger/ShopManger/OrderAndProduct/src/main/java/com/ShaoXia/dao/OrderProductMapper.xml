@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Config 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ShaoXia.dao.OrderProductMapper">
+
+    <select id="selectOrderProducts" resultType="OrderProduct">
+        select * from `orderproduct` op
+        <where>
+            <if test="order_id != null">
+                and order_id = #{order_id}
+            </if>
+            <if test="product_id != null">
+                and op.product_id = #{product_id}
+            </if>
+        </where>
+    </select>
+
+
+    <insert id="insertOrderProduct">
+        insert into orderproduct (order_id ,product_id,quantity, create_time)
+        values 
+        <foreach collection="orderProductList" item="orderProduct" separator=",">
+            (#{orderProduct.orderId},#{orderProduct.productId},#{orderProduct.quantity},#{orderProduct.createTime})
+        </foreach>
+    </insert>
+
+
+    <update id="updateOrderProduct">
+        update orderproduct
+        <set>
+            <if test="quantity != null">
+                quantity = #{quantity}
+            </if>
+            <if test="update_time != null">
+                ,update_time = #{update_time}
+            </if>
+        </set>
+        where order_id = #{order_id} and product_id =#{product_id}
+    </update>
+
+    <delete id="deleteOrderProduct" >
+        delete from orderproduct
+        <where>
+            <if test="order_id != null">
+                order_id = #{order_id}
+            </if>
+            <if test="product_id != null">
+                product_id != #{product_id}
+            </if>
+        </where>
+    </delete>
+</mapper>

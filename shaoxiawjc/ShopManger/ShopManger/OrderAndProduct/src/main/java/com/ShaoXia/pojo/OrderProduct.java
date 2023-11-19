@@ -4,22 +4,23 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import java.math.BigDecimal;
 import java.util.Date;
 
 /**
  * @author shaoxiawjc
- * @ 2023/11/15
+ * @ 2023/11/16
  * @ IntelliJ IDEA
  * @ ShopManger
  * @ com.ShaoXia.pojo
  **/
 @Data
-@AllArgsConstructor
 @NoArgsConstructor
-public class Order {
+@AllArgsConstructor
+public class OrderProduct {
 	private int orderId;
-	private BigDecimal orderPrice;
+	private int productId;
+	private int quantity;
 	private Date createTime;
 	private Date updateTime;
+
 }

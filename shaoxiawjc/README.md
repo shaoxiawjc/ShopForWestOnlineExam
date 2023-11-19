@@ -6,6 +6,10 @@
 
 以下是最新的介绍
 
+
+
+**使用spring，mybatis框架**
+
 ### 数据库的表
 
 1. 商品表(用sqlyog偷懒创建的)
@@ -31,11 +35,57 @@
    ) ENGINE=INNODB DEFAULT CHARSET=utf8;
    ```
 
-   
+
+### 实体类
+
+order
+
+```JAVA
+private int orderId;
+private BigDecimal orderPrice;
+private Date createTime;
+private Date updateTime;
+```
+
+orderproduct
+
+```JAVA
+private int orderId;
+private int productId;
+private int quantity;
+private Date createTime;
+private Date updateTime;
+```
+
+product
+
+```java
+private int productId;
+private String productName;
+private BigDecimal productPrice;
+private Date createTime;
+private Date updateTime;
+```
+
+### dao层
+
+对实体类的增删改查，具体代码参考项目
+
+### service
+
+同上
 
 
 
 
+
+## 遇到的问题与待改进点
+
+异常类还未创建，主要这玩意不知道要写哪些。。。。
+
+遇到的问题
+
+* 我的关联表是又order_id product_id 俩个外键，但是我想在创建关联表的同时创建订单表并使用sum函数自动计算总价，但是这样就会因为外键的约束而报错，我不知道应该怎么设计sql语句和事务的管理，我只好采用先创建一个空行，在创建一个关联行，在对原来的行进行更新。但是这样看好像显得繁琐
 
 
 
