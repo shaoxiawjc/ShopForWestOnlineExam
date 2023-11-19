@@ -6,18 +6,11 @@
         http://www.springframework.org/schema/aop
        http://www.springframework.org/schema/aop/spring-aop.xsd">
 
-    <bean id="dataSource" class="com.mchange.v2.c3p0.ComboPooledDataSource">
-        <property name="driverClass" value="${driver}"/>
-        <property name="jdbcUrl" value="${url}"/>
-        <property name="user" value="${username}"/>
-        <property name="password" value="${password}"/>
-        <!--c3p0的私有属性-->
-        <property name="maxPoolSize" value="30"/>
-        <property name="minPoolSize" value="10"/>
-        <!--关闭连接后，不自动commit-->
-        <property name="autoCommitOnClose" value="false"/>
-        <property name="checkoutTimeout" value="10000"/>
-        <property name="acquireRetryAttempts" value="2"/>
+    <bean id="dataSource" class="org.springframework.jdbc.datasource.DriverManagerDataSource">
+        <property name="driverClassName" value="com.mysql.cj.jdbc.Driver"/>
+        <property name="url" value="jdbc:mysql://localhost:3306/shop?userSSL=true&amp;useUnicode=true&amp;characterEncoding=UTF-8&amp;useSSL=false&amp;serverTimezone=UTC"/>
+        <property name="username" value="root"/>
+        <property name="password" value="1234567"/>
     </bean>
 
     <bean id="sqlSessionFactory" class="org.mybatis.spring.SqlSessionFactoryBean">

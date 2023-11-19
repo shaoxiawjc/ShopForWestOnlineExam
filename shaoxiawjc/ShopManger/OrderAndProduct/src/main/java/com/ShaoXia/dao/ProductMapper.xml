@@ -6,6 +6,14 @@
     <!--查询全部的商品-->
     <select id="selectAllProduct" resultType="product">
         select * from product
+        <where>
+            <if test="order_id != null">
+                and order_id = #{order_id}
+            </if>
+            <if test="product_id != null">
+                and product_id = #{product_id}
+            </if>
+        </where>
     </select>
 
     <!--根据id查询指定商品-->
@@ -16,7 +24,7 @@
     <!--增加商品-->
     <insert id="insertProduct" parameterType="product">
         insert into product (product_id,product_name,product_price,create_time)
-        values (#{productId},#{productName},#{productPrice},#{create_time})
+        values (#{productId},#{productName},#{productPrice},#{createTime})
     </insert>
 
     <!--删除商品，同时由于外键，关联表里相关的数据会被一并删除-->
@@ -24,20 +32,11 @@
         delete from product where product_id = #{id}
     </delete>
 
+
     <!--更新商品-->
-    <update id="updateProduct" parameterType="map">
-        update product
-        <set>
-            <if test="product_name != null">
-                product_name = #{product_name}
-            </if>
-            <if test="product_price != null">
-                , product_price = #{product_price}
-            </if>
-            <if test="update_time != null">
-                , update_time = #{update_time}
-            </if>
-        </set>
-        where product_id = #{product_id}
+    <update id="updateOrderProduct" >
+        update orderproduct
+        set quantity = #{quantity}, update_time=#{update_time}
+        where order_id = #{order_id} and product_id = #{product_id}
     </update>
 </mapper>

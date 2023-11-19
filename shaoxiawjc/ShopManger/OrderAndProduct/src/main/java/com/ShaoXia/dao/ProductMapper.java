@@ -2,6 +2,7 @@ package com.ShaoXia.dao;
 
 import com.ShaoXia.pojo.Product;
 import org.apache.ibatis.annotations.Param;
+import org.springframework.stereotype.Repository;
 
 import java.util.List;
 import java.util.Map;
@@ -13,6 +14,7 @@ import java.util.Map;
  * @ ShopManger
  * @ com.ShaoXia.dao
  **/
+@Repository
 public interface ProductMapper {
 	List<Product> selectAllProduct();
 	Product selectProductById(@Param("id") int id);

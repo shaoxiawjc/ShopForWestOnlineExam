@@ -1,12 +1,13 @@
 package com.ShaoXia.dao;
 
 import com.ShaoXia.pojo.Order;
+import com.ShaoXia.pojo.OrderProduct;
 import org.apache.ibatis.annotations.Param;
+import org.springframework.stereotype.Repository;
 
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
-
 /**
  * @author shaoxiawjc
  * @ 2023/11/15
@@ -14,6 +15,7 @@ import java.util.Map;
  * @ ShopManger
  * @ com.ShaoXia.dao
  **/
+@Repository
 public interface OrderMapper {
 	/**
 	 * 查询订单
@@ -24,13 +26,21 @@ public interface OrderMapper {
 	 * */
 	List<Order> selectOrder(Map map);
 
+
 	/**
 	 * 增删改
-	 * 其中更新方法（updateOrder）只修改price总价，
-	 * 而总价之和关联表的quantity和product表的price绝定
+	 * 其中更新方法（updateOrder）修改商品的数量，通过sum函数修改总价
+	 * 如果想要删除订单的某个商品，我觉得把数量设置为0就好了（
 	 * */
-	int updateOrder(@Param("id") int id, @Param("update_time") Date updateTime);
-	int deleteOder(@Param("id") int id);
-	int insertOrder(Order order);
+
+	int updateOrder(@Param("order_id") int order_id,
+					@Param("update_time") Date update_time);
+
+
+	int deleteOrder(@Param("id") int id);
+
+	int insertHollowOrder(@Param("order_id") int order_id,@Param("create_time") Date create_time);
+	int insertOrder(@Param("order_id") int order_id,
+					@Param("create_time")Date create_time);
 
 }

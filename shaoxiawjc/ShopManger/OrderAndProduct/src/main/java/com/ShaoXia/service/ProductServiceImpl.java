@@ -9,6 +9,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.jdbc.datasource.DataSourceTransactionManager;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.TransactionStatus;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.transaction.support.DefaultTransactionDefinition;
 
 import java.util.List;
@@ -24,17 +25,8 @@ import java.util.Map;
 @Service
 public class ProductServiceImpl implements ProductService{
 	private ProductMapper productMapper;
-	private DataSourceTransactionManager transactionManager;
-	private OrderProductMapper orderProductMapper;
-
-	public void setOrderProductMapper(OrderProductMapper orderProductMapper) {
-		this.orderProductMapper = orderProductMapper;
-	}
 	public void setProductMapper(ProductMapper productMapper) {
 		this.productMapper = productMapper;
-	}
-	public void setTransactionManager(DataSourceTransactionManager transactionManager) {
-		this.transactionManager = transactionManager;
 	}
 
 	@Override
@@ -48,44 +40,35 @@ public class ProductServiceImpl implements ProductService{
 	}
 
 	@Override
+	@Transactional
 	public int insertProduct(Product product) {
-		DefaultTransactionDefinition def = new DefaultTransactionDefinition();
-		TransactionStatus status = transactionManager.getTransaction(def);
 		int i = -1;
 		try{
 			i = productMapper.insertProduct(product);
-			transactionManager.commit(status);
 		}catch (Exception e){
 			e.printStackTrace();
-			transactionManager.rollback(status);
 		}
 		return i;
 	}
 
 	@Override
+	@Transactional
 	public int deleteProduct(int id) {
-		DefaultTransactionDefinition def = new DefaultTransactionDefinition();
-		TransactionStatus status = transactionManager.getTransaction(def);
 		try{
 			int i = productMapper.deleteProduct(id);
-			transactionManager.commit(status);
 			return i;
 		}catch (Exception e){
-			transactionManager.rollback(status);
 		}
 		return -1;
 	}
 
 	@Override
+	@Transactional
 	public int updateProduct(Map map) {
-		DefaultTransactionDefinition def = new DefaultTransactionDefinition();
-		TransactionStatus status = transactionManager.getTransaction(def);
 		try{
 			int i = productMapper.updateProduct(map);
-			transactionManager.commit(status);
 			return i;
 		}catch (Exception e){
-			transactionManager.rollback(status);
 		}
 		return -1;
 	}
