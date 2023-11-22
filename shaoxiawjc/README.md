@@ -2,15 +2,19 @@
 
 ## 简单介绍
 
-之前的修改记录被我删除了（写的太烂了）
+~~介绍~~(**ShopManager**)
 
-以下是最新的介绍
+修改后的是**shopmanager2**主要不知道github能不能看之前的记录，就把之前的项目保留下来了
+
+**其中之前的项目1是订单商品关联表采用联合主键设计的表，但是因为性能低和操作的复杂等原因被我抛弃了**
+
+以下是最新的shopmanager2的介绍 （还没写异常类。。。）
+
+整个项目**使用spring，mybatis框架，mysql8.0**
 
 
 
-**使用spring，mybatis框架**
-
-### 数据库的表
+### ~~数据库的表~~（最初的表）
 
 1. 商品表(用sqlyog偷懒创建的)
 
@@ -25,26 +29,31 @@
    用于将订单和商品联系起来的表
 
    ```sql
-   CREATE TABLE `orderproduct`(
-   `order_id` INT(20) NOT NULL COMMENT '订单的id',
-   `product_id` INT(20) NOT NULL COMMENT '商品的id',
-   `quantity` INT(20) NOT NULL COMMENT '商品的数量',
-   PRIMARY KEY (`order_id`, `product_id`),
-   FOREIGN KEY (`order_id`) REFERENCES `order`(order_id) ON DELETE CASCADE,
-   FOREIGN KEY (product_id) REFERENCES `product`(product_id) ON DELETE CASCADE
-   ) ENGINE=INNODB DEFAULT CHARSET=utf8;
+   CREATE TABLE `productorder` (
+   `id` INT(20) NOT NULL AUTO_INCREMENT PRIMARY KEY COMMENT '唯一标识id',
+   `order_id` INT NOT NULL COMMENT '对应订单id',
+   `product_id` INT NOT NULL COMMENT '对应商品id',
+   `quantity` INT NOT NULL COMMENT '商品数量',
+   CONSTRAINT fk_order_id FOREIGN KEY (`order_id` )REFERENCES `order` (order_id) ON DELETE CASCADE, -- 同时删除
+   CONSTRAINT fk_product_id FOREIGN KEY (`product_id`) REFERENCES `product` (product_id) ON DELETE CASCADE -- 同时删除
+   )ENGINE=INNODB DEFAULT CHARSET=utf8
    ```
 
 
-### 实体类
+
+### 项目结构
+
+因为写这个项目的时候springmvc学了一点点，所以就把它当web项目了（
+
+
+
+### 实体类pojo
 
 order
 
 ```JAVA
 private int orderId;
 private BigDecimal orderPrice;
-private Date createTime;
-private Date updateTime;
 ```
 
 orderproduct
@@ -53,8 +62,6 @@ orderproduct
 private int orderId;
 private int productId;
 private int quantity;
-private Date createTime;
-private Date updateTime;
 ```
 
 product
@@ -63,29 +70,38 @@ product
 private int productId;
 private String productName;
 private BigDecimal productPrice;
-private Date createTime;
-private Date updateTime;
 ```
 
-### dao层
 
-对实体类的增删改查，具体代码参考项目
 
-### service
+### mapper层对pojo层最基本的增删改查
 
-同上
+详细代码参考项目
 
 
 
+### service层根据需求复杂化dao层
 
 
-## 遇到的问题与待改进点
 
-异常类还未创建，主要这玩意不知道要写哪些。。。。
+### controller层（摆设）
 
-遇到的问题
 
-* 我的关联表是又order_id product_id 俩个外键，但是我想在创建关联表的同时创建订单表并使用sum函数自动计算总价，但是这样就会因为外键的约束而报错，我不知道应该怎么设计sql语句和事务的管理，我只好采用先创建一个空行，在创建一个关联行，在对原来的行进行更新。但是这样看好像显得繁琐
+
+
+
+
+
+## 项目亮点
+
+==没有亮点也是亮点==
+
+
+
+## 遇到的问题
+
+1. 第一个就是抛弃了联合主键的关联表，重写了项目，但是对于这种一对多的数据库的设计还是不够熟练，并不知道什么时候可以使用联合主键。
+2. 第二个问题，在最初的项目遇到了。假设我不使用声明式事务，在一个事务里，我要创建一个订单，其中订单的price属性通过sum函数自动计算总价，同时在关联表里插入相关数据，但是如果我先在关联表里插入行，会因为外键找不到对应主键而保存，但是如果我先创建订单，我的sum函数又无法发挥作用。我的解决办法是在service的insert方法里先创建一个price为0.00的行，在插入关联表，在更新。但是我想知道有没有其他的方法。
 
 
 
