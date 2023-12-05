@@ -1,13 +1,13 @@
+import com.ShaoXia.dao.OrderMapper;
+import com.ShaoXia.dao.OrderProductMapper;
 import com.ShaoXia.pojo.OrderProduct;
-import com.ShaoXia.pojo.Product;
-import com.ShaoXia.service.OrderProductService;
 import com.ShaoXia.service.OrderService;
+import com.ShaoXia.service.OrderServiceImpl;
 import com.ShaoXia.service.ProductService;
 import org.junit.Test;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 
-import java.math.BigDecimal;
 import java.util.*;
 
 /**
@@ -20,14 +20,11 @@ import java.util.*;
 public class MyTest {
 
 	@Test
-	public void testProductService(){
+	public void test(){
 		ApplicationContext context =
 				new ClassPathXmlApplicationContext("spring-service.xml");
 
-		ProductService productService = context.getBean(ProductService.class);
-		OrderService orderService = context.getBean(OrderService.class);
-		OrderProductService orderProductService = context.getBean(OrderProductService.class);
-
+		ProductService service = context.getBean(ProductService.class);
 		// 增加一个商品
 //		System.out.println(service.insertProduct(new Product(3, "高等数学讲义", new BigDecimal("50.00"), new Date())));
 //		System.out.println(service.insertProduct(new Product(4, "线性代数讲义", new BigDecimal("50.00"), new Date())));
@@ -35,8 +32,7 @@ public class MyTest {
 //		System.out.println(service.insertProduct(new Product(6, "天选4", new BigDecimal("7299.00"), new Date())));
 //		System.out.println(service.insertProduct(new Product(7, "java从入门到入土", new BigDecimal("100.00"), new Date())));
 //		System.out.println(service.insertProduct(new Product(8, "孙笑川直肠倒模", new BigDecimal("10000.00"), new Date())));
-		// 删除一个商品
-		// System.out.println(service.deleteProduct(2));
+
 
 		// 修改一个商品
 //		Map map = new HashMap();
@@ -57,41 +53,60 @@ public class MyTest {
 //		System.out.println(productService.selectProductById(4));
 //		System.out.println(productService.selectProductById(5));
 
-		// 查询订单
-//		Map map1 = new HashMap();
-//		System.out.println(orderService.selectOrder(map1));
-//		System.out.println(orderProductService.selectOrderProducts(map1));
-//
-//		Map map2 = new HashMap();
-//		map2.put("product_id",2);
-//		System.out.println(orderService.selectOrder(map2));
-//		System.out.println(orderProductService.selectOrderProducts(map2));
-//
-//		Map map3 = new HashMap();
-//		map3.put("product_id",2);
-//		map3.put("order_id",1);
-//		System.out.println(orderService.selectOrder(map3));
-//		System.out.println(orderProductService.selectOrderProducts(map3));
+
+		// -------------------------- //
+
+		OrderMapper orderMapper = context.getBean(OrderMapper.class);
+		OrderProductMapper orderProductMapper = context.getBean(OrderProductMapper.class);
+		OrderServiceImpl orderService = context.getBean(OrderServiceImpl.class);
+
+		// 测试dao层
+//		orderMapper.deleteOrder(1);
+//		orderMapper.deleteOrder(2);
+//		orderMapper.deleteOrder(3);
+//		orderMapper.deleteOrder(4);
+//		orderMapper.deleteOrder(5);
+		System.out.println(orderMapper.selectAllOrder());
+		System.out.println(orderMapper.selectOrderById(1));
+//		System.out.println("-------------------------------------");
+//		System.out.println(orderProductMapper.selectAllOrderProducts());
+//		System.out.println("----------------------------------------------");
+//		System.out.println(orderMapper.insertOrder());
+//		orderProductMapper.insertOrderProduct(new OrderProduct(9,2,3));
+//		System.out.println(orderProductMapper.selectAllOrderProducts());
+//		orderMapper.updateOrder(9);
+//		System.out.println(orderMapper.selectAllOrder());
+//		orderProductMapper.updateOrderProduct(new OrderProduct(1,9,3,1));
+//		orderMapper.updateOrder(9);
+//		System.out.println(orderMapper.selectAllOrder());
+
+		// 测试order的service层
+		// 测试增加订单
+//		orderService.insertOrder(new OrderProduct(1,3,6));
+//		System.out.println(orderService.selectAllOrder());
+//		orderService.insertOrder(new OrderProduct(1,6,7));
+//		orderService.insertOrder(new OrderProduct(2,3,7));
+//		orderService.insertOrder(new OrderProduct(1,6,7));
+//		orderService.insertOrder(new OrderProduct(2,6,7));
+//		System.out.println(orderService.selectAllOrder());
+//		System.out.println("订单1的详细"+orderService.selectOrderProductByOrderId(1));
+//		System.out.println("订单2的详细"+orderService.selectOrderProductByOrderId(2));
+
+		// 测试修改订单
+//		orderService.updateOrder(new OrderProduct(1,2,3,6));
+//		System.out.println(orderService.selectAllOrderProducts());
+//		System.out.println(orderService.selectAllOrder());
 
 
-		// 增加订单
-//		System.out.println(orderService.insertHollowOrder(6, new Date()));
-//		List<OrderProduct> orderProductList = new ArrayList();
-//		orderProductList.add(new OrderProduct(6,1,20,new Date(),null));
-//		orderProductList.add(new OrderProduct(6,2,201,new Date(),null));
-//		orderProductList.add(new OrderProduct(6,3,200,new Date(),null));
-//		System.out.println(orderProductService.insertOrderProduct(orderProductList));
-//		orderService.updateOrder(6,new Date());
-
-		// 删除订单
-//		System.out.println(orderService.deleteOrder(6));
-
-		// 修改订单
-		System.out.println(orderProductService.updateOrderProduct(5, 1, 20, new Date()));
-		orderService.updateOrder(5,new Date());
-
+		// 测试删除功能
+		// 删除一个订单
+		//orderService.deleteOrder(2);
+		// 删除一个商品
+//		System.out.println(service.deleteProduct(3));
+//		System.out.println(orderService.selectAllOrder());
+//		System.out.println(orderService.selectAllOrderProducts());
 
 	}
 
 
-	}
+}

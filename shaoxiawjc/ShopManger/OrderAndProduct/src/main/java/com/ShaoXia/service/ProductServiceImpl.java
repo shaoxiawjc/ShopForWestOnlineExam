@@ -29,16 +29,25 @@ public class ProductServiceImpl implements ProductService{
 		this.productMapper = productMapper;
 	}
 
+	/**
+	 * 查询全部商品
+	 * **/
 	@Override
 	public List<Product> selectAllProduct() {
 		return productMapper.selectAllProduct();
 	}
 
+	/**
+	 * 通过id查询商品
+	 * **/
 	@Override
 	public Product selectProductById(int id) {
 		return productMapper.selectProductById(id);
 	}
 
+	/**
+	 * 插入商品
+	 * **/
 	@Override
 	@Transactional
 	public int insertProduct(Product product) {
@@ -51,6 +60,9 @@ public class ProductServiceImpl implements ProductService{
 		return i;
 	}
 
+	/**
+	 * 删除指定商品，由于外键约束，会一并删除关联表的所有内容
+	 * **/
 	@Override
 	@Transactional
 	public int deleteProduct(int id) {
@@ -62,6 +74,9 @@ public class ProductServiceImpl implements ProductService{
 		return -1;
 	}
 
+	/**
+	 * 修改商品的指定信息
+	 * **/
 	@Override
 	@Transactional
 	public int updateProduct(Map map) {

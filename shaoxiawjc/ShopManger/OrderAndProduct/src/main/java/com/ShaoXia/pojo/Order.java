@@ -15,11 +15,17 @@ import java.util.Date;
  * @ com.ShaoXia.pojo
  **/
 @Data
-@AllArgsConstructor
 @NoArgsConstructor
 public class Order {
 	private int orderId;
 	private BigDecimal orderPrice;
-	private Date createTime;
-	private Date updateTime;
+
+	public Order(BigDecimal orderPrice) {
+		this.orderPrice = orderPrice;
+	}
+
+	public Order(int orderId, BigDecimal orderPrice) {
+		this.orderId = orderId;
+		this.orderPrice = orderPrice;
+	}
 }

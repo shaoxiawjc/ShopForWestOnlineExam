@@ -15,12 +15,22 @@ import java.util.Date;
  **/
 @Data
 @NoArgsConstructor
-@AllArgsConstructor
 public class OrderProduct {
+	private int id;
 	private int orderId;
 	private int productId;
 	private int quantity;
-	private Date createTime;
-	private Date updateTime;
 
+	public OrderProduct(int id, int orderId, int productId, int quantity) {
+		this.id = id;
+		this.orderId = orderId;
+		this.productId = productId;
+		this.quantity = quantity;
+	}
+
+	public OrderProduct(int orderId, int productId, int quantity) {
+		this.orderId = orderId;
+		this.productId = productId;
+		this.quantity = quantity;
+	}
 }

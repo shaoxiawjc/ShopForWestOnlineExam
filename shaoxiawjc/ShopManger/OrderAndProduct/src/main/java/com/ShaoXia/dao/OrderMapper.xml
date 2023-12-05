@@ -4,41 +4,48 @@
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.ShaoXia.dao.OrderMapper">
 
-    <!--查询订单的id，包含的商品的名称，数量，创建和修改时间以及其总价-->
-    <select id="selectOrder">
-        select *
+
+    <select id="selectAllOrder" resultMap="rop">
+        select
+            o.order_id oid,
+            o.order_price op,
+            p.product_name pn,
+            p.product_price pp,
+            po.quantity poq
         from `order` o
-        inner join orderproduct op on o.order_id = op.order_id
-        inner join product p on p.product_id = op.product_id
-        <where>
-            <if test="order_id != null">
-                and op.order_id = #{order_id}
-            </if>
-            <if test="product_name != null">
-                and op.product_id = #{product_id}
-            </if>
-        </where>
-        order by o.order_id,p.product_id
+        inner join `productorder` po on o.order_id = po.order_id
+        inner join product p on p.product_id = po.product_id
+    </select>
+    <resultMap id="rop" type="resultOrderProduct">
+        <result property="orderId" column="oid"/>
+        <result property="orderPrice" column="op"/>
+        <collection property="products" ofType="product">
+            <result property="productName" column="pn"/>
+            <result property="productPrice" column="pp"/>
+        </collection>
+        <collection property="orderProducts" ofType="orderProduct">
+            <result property="quantity" column="poq"/>
+        </collection>
+    </resultMap>
+
+
+    <select id="selectOrderById">
+        select
+            o.order_id oid,
+            o.order_price op,
+            p.product_name pn,
+            p.product_price pp,
+            po.quantity poq
+        from `order` o
+                 inner join `productorder` po on o.order_id = po.order_id
+                 inner join product p on p.product_id = po.product_id
+        where o.order_id = #{id}
     </select>
 
 
-
-
-    <insert id="insertHollowOrder">
-        insert into `order` (order_id,create_time) values (#{order_id},#{create_time})
-    </insert>
+    <!--插入一张空订单-->
     <insert id="insertOrder">
-        insert into `order` (order_id,order_price,create_time)
-        select
-            #{order_id},SUM(op.quantity * p.product_price),#{create_time}
-        from
-            orderproduct op
-        inner join
-            product p on op.product_id = p.product_id
-        where
-            op.order_id = #{order_id}
-        group by
-            op.order_id;
+      insert into `order` (order_price) values (0.00)
     </insert>
 
 
@@ -53,11 +60,10 @@
         update `order` o
         set  o.order_price = (
             select SUM(op.quantity * p.product_price)
-            from orderproduct op
+            from productorder op
             inner join product p on p.product_id = op.product_id
             where o.order_id = op.order_id
-            ),
-             o.update_time = #{update_time}
+            )
         where o.order_id = #{order_id};
     </update>
 

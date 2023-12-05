@@ -20,15 +20,13 @@ import java.util.Map;
  **/
 @Repository
 public interface OrderProductMapper {
-	List<OrderProduct> selectOrderProducts(Map map);
+	List<OrderProduct> selectAllOrderProducts();
+	List<OrderProduct> selectOrderProductByOrderId(@Param("orderId") int id);
 
 
-	int insertOrderProduct(@Param("orderProductList") List<OrderProduct> orderProductList);
+	int insertOrderProduct(OrderProduct orderProduct);
 
-	int deleteOrderProduct(Map map);
+	int deleteOrderProduct(@Param("id") int id);
 
-	int updateOrderProduct( @Param("order_id") int order_id,
-							@Param("product_id") int product_id,
-							@Param("quantity") int quantity,
-							@Param("update_time") Date update_time);
+	int updateOrderProduct(OrderProduct orderProduct);
 }

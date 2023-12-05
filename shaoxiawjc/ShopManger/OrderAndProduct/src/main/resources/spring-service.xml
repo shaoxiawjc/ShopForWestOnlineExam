@@ -16,10 +16,8 @@
         <property name="productMapper" ref="productMapper"/>
     </bean>
     <bean class="com.ShaoXia.service.OrderServiceImpl" id="orderService">
-        <property name="orderMapper" ref="orderMapper"/>
-    </bean>
-    <bean name="orderProductService" class="com.ShaoXia.service.OrderProductServiceImpl">
         <property name="orderProductMapper" ref="orderProductMapper"/>
+        <property name="orderMapper" ref="orderMapper"/>
     </bean>
 
 
