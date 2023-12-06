@@ -22,4 +22,5 @@ public class ResultOrderProduct {
 	private List<Product> products;
 	private List<OrderProduct> orderProducts;
 
+
 }

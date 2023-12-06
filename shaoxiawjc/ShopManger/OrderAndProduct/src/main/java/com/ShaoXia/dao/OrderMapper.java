@@ -30,10 +30,11 @@ public interface OrderMapper {
 	 * 其中更新方法（updateOrder）修改商品的数量，通过sum函数修改总价
 	 * 如果想要删除订单的某个商品，我觉得把数量设置为0就好了（
 	 * */
-	int insertOrder();
+	int insertOrder(Order order);
 
 	int updateOrder(@Param("order_id") int order_id);
 
 	int deleteOrder(@Param("id") int id);
+
 
 }

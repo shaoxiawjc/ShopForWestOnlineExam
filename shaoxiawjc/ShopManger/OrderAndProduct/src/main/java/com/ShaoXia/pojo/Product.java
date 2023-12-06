@@ -19,22 +19,17 @@ public class Product {
 	private int productId;
 	private String productName;
 	private BigDecimal productPrice;
-	private Date createTime;
-	private Date updateTime;
 
-	public Product(int productId, String productName, BigDecimal productPrice, Date createTime, Date updateTime) {
+	public Product(String productName, BigDecimal productPrice) {
+		this.productName = productName;
+		this.productPrice = productPrice;
+	}
+
+	public Product(int productId, String productName, BigDecimal productPrice) {
 		this.productId = productId;
 		this.productName = productName;
 		this.productPrice = productPrice;
-		this.createTime = createTime;
-		this.updateTime = updateTime;
 	}
 
-	public Product(int productId, String productName, BigDecimal productPrice, Date createTime) {
-		this.productId = productId;
-		this.productName = productName;
-		this.productPrice = productPrice;
-		this.createTime = createTime;
-	}
 
 }

@@ -28,4 +28,5 @@ public class Order {
 		this.orderId = orderId;
 		this.orderPrice = orderPrice;
 	}
+
 }

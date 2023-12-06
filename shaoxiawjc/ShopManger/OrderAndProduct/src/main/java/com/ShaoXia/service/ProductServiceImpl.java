@@ -12,6 +12,8 @@ import org.springframework.transaction.TransactionStatus;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.transaction.support.DefaultTransactionDefinition;
 
+import java.math.BigDecimal;
+import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
@@ -50,10 +52,11 @@ public class ProductServiceImpl implements ProductService{
 	 * **/
 	@Override
 	@Transactional
-	public int insertProduct(Product product) {
+	public int insertProduct(String productName,
+							 BigDecimal productPrice) {
 		int i = -1;
 		try{
-			i = productMapper.insertProduct(product);
+			i = productMapper.insertProduct(productName, productPrice);
 		}catch (Exception e){
 			e.printStackTrace();
 		}
@@ -70,6 +73,7 @@ public class ProductServiceImpl implements ProductService{
 			int i = productMapper.deleteProduct(id);
 			return i;
 		}catch (Exception e){
+			e.printStackTrace();
 		}
 		return -1;
 	}
@@ -84,6 +88,7 @@ public class ProductServiceImpl implements ProductService{
 			int i = productMapper.updateProduct(map);
 			return i;
 		}catch (Exception e){
+			e.printStackTrace();
 		}
 		return -1;
 	}

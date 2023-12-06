@@ -46,6 +46,9 @@
     <!--插入一张空订单-->
     <insert id="insertOrder">
       insert into `order` (order_price) values (0.00)
+      <selectKey keyProperty="orderId" keyColumn="order_id" order="AFTER" resultType="int">
+          SELECT LAST_INSERT_ID();
+      </selectKey>
     </insert>
 
 

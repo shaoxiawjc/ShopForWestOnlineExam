@@ -23,8 +23,8 @@
 
     <!--增加商品-->
     <insert id="insertProduct" parameterType="product">
-        insert into product (product_id,product_name,product_price,create_time)
-        values (#{productId},#{productName},#{productPrice},#{createTime})
+        insert into product (product_name,product_price)
+        values (#{productName},#{productPrice})
     </insert>
 
     <!--删除商品，同时由于外键，关联表里相关的数据会被一并删除-->
@@ -34,9 +34,9 @@
 
 
     <!--更新商品-->
-    <update id="updateOrderProduct" >
-        update orderproduct
-        set quantity = #{quantity}, update_time=#{update_time}
-        where order_id = #{order_id} and product_id = #{product_id}
+    <update id="updateProduct" >
+        update `product`
+        set product_name = #{productName},product_price = #{productPrice}
+        where product_id = #{productId}
     </update>
 </mapper>

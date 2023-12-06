@@ -36,6 +36,15 @@ public interface OrderService {
 	 * 通过id查询订单,同时打印相关信息
 	 * */
 	List<ResultOrderProduct> selectOrderById(int id);
+
+
+
+	/***
+	 * 插入空订单
+	 * 无参数 直接返回订单id参数
+	 * */
+	int insertHollowOrder();
+
 	/***
 	 * 增加一份订单
 	 * */

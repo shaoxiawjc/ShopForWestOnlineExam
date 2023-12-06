@@ -12,6 +12,8 @@
     </select>
 
 
+    
+    
     <insert id="insertOrderProduct">
         insert into productorder (order_id ,product_id,quantity)
         values
@@ -20,7 +22,7 @@
 
 
     <update id="updateOrderProduct">
-        update productorder set order_id = #{orderId},product_id = #{productId},quantity = #{quantity} where id = #{id}
+        update productorder set quantity = #{quantity} where order_id = #{orderId} and product_id = #{productId}
     </update>
 
     <delete id="deleteOrderProduct" >

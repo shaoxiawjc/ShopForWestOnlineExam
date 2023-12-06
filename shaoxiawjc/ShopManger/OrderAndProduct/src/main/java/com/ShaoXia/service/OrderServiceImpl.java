@@ -69,6 +69,17 @@ public class OrderServiceImpl implements OrderService{
 		return orderMapper.selectOrderById(id);
 	}
 
+
+
+
+	@Override
+	@Transactional
+	public int insertHollowOrder() {
+		Order order = new Order();
+		orderMapper.insertOrder(order);
+		return order.getOrderId();
+	}
+
 	/**
 	 * 插入一条订单
 	 * 如果订单id存在，这相当于在次订单上增加商品
@@ -77,9 +88,6 @@ public class OrderServiceImpl implements OrderService{
 	@Override
 	@Transactional
 	public int insertOrder(OrderProduct orderProduct) {
-		if (orderMapper.selectOrderById(orderProduct.getOrderId()) == null){
-			orderMapper.insertOrder();
-		}
 		orderProductMapper.insertOrderProduct(orderProduct);
 		orderMapper.updateOrder(orderProduct.getOrderId());
 		return 1;
